@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% block body %}
+    <section class="articles">
+         {% for article in articles %}
+            <article>
+                <h2>{{ article.name }}</h2>
+                    <p>{{ article.description }}/p>
+                    <p>{{ article.price }}</p>
+                    <a href="{{ path('articleShow', {'id':article.id}) }}" class="btn btn-primary">Selectionner</a>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
