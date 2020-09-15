@@ -2,10 +2,20 @@
 
 namespace App\Controller;
 
+//use Doctrine\DBAL\Types\TextType;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
+//use http\Env\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+
+
 //use Symfony\Component\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -13,8 +23,27 @@ class ArticleController extends AbstractController
     /**
      * @route("/article/new", name="article_create")
      */
-    public function create(){
-        return $this->render('article/create.html.twig');
+    public function create(Request $request, EntityManagerInterface $manager){
+        $article = new Article();
+
+        $form = $this->createFormBuilder($article)
+                    ->add('name')
+                    ->add('description')
+                    ->add('price')
+                    ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $manager->persist($article);
+            $manager->flush();
+
+            return $this->redirectToRoute('articleShow',['id' => $article->getId()]);
+        }
+
+        return $this->render('article/create.html.twig', [
+            'formArticle' => $form->createView()
+        ]);
     }
 
     /**
