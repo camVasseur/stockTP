@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Stock;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Article;
@@ -10,17 +11,25 @@ class ArticleFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-       for($i = 1; $i <= 10; $i++){
+        $faker = \Faker\Factory::create('fr_FR');
+        //Créer trois Stock fakés
+        for($i = 0; $i<=3; $i++){
+            $stock = new Stock();
+            $stock->setName($faker->country)
+                    ->setQuantity($faker->randomDigitNotNull );
+            $manager->persist($stock);
+            //creer entre 4 et 6 articles
 
-         $article = new Article();
-         $article->setName("chaussures n°$i");
-         $article->setPrice(100);
-         $article->setDescription("chaussures de sport ");
+            for($j = 1; $j <= mt_rand(4, 6); $j++){
 
-         $manager->persist($article);
-         $manager->flush();
-
-       }
-
+                $article = new Article();
+                $article->setName($faker->city)
+                        ->setPrice($faker->randomDigit )
+                        ->setDescription($faker->paragraph())
+                        ->setStock($stock);
+                $manager->persist($article);
+            }
+        }
+        $manager->flush();
     }
 }

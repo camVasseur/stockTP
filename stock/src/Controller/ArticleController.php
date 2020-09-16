@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 //use Doctrine\DBAL\Types\TextType;
+use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 //use http\Env\Request;
@@ -22,15 +23,13 @@ class ArticleController extends AbstractController
 {
     /**
      * @route("/article/new", name="article_create")
+     * @route("/article/{id}/edit", name="article_edit")
      */
-    public function create(Request $request, EntityManagerInterface $manager){
-        $article = new Article();
-
-        $form = $this->createFormBuilder($article)
-                    ->add('name')
-                    ->add('description')
-                    ->add('price')
-                    ->getForm();
+    public function form(Article $article = null, Request $request, EntityManagerInterface $manager){
+        if(!$article){
+            $article = new Article();
+        }
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
 
@@ -42,7 +41,8 @@ class ArticleController extends AbstractController
         }
 
         return $this->render('article/create.html.twig', [
-            'formArticle' => $form->createView()
+            'formArticle' => $form->createView(),
+            'editMode' => $article->getId() != null
         ]);
     }
 
