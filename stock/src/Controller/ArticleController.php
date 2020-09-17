@@ -10,6 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
@@ -44,6 +45,18 @@ class ArticleController extends AbstractController
             'formArticle' => $form->createView(),
             'editMode' => $article->getId() != null
         ]);
+    }
+
+    /**
+     * @route("/article/{id}/delete", name="article_delete")
+     */
+    public function delete(Article $article): RedirectResponse{
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
+
+        return $this->redirectToRoute("article");
+
     }
 
     /**

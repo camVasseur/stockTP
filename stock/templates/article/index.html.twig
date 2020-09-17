@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticleController!{% endblock %}
+{% block title %}Liste des articles{% endblock %}
 
 {% block body %}
     <section class="articles">
@@ -9,7 +9,8 @@
                 <h2>{{ article.name }}</h2>
                     <p>{{ article.description }}</p>
                     <p>{{ article.price }}</p>
-                    <a href="{{ path('articleShow', {'id':article.id}) }}" class="btn btn-primary">Selectionner</a>
+                    <a href="{{ path('article_edit', {'id':article.id}) }}" class="btn btn-primary">Selectionner</a>
+                    <a href="{{ path('article_delete',{"id": article.id}) }}" class="btn btn-primary" onclick="return confirm('Attention ceci va supprimer l\'article')">Supprimer</a>
             </article>
         {% endfor %}
     </section>
