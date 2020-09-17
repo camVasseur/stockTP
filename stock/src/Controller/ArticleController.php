@@ -4,11 +4,10 @@ namespace App\Controller;
 
 //use Doctrine\DBAL\Types\TextType;
 use App\Form\ArticleType;
+use App\Form\GetArticleByIdType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 //use http\Env\Request;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +15,7 @@ use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-
+use App\Form\GetArticleByNameType;
 
 //use Symfony\Component\Annotation\Route;
 
@@ -58,6 +57,74 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute("article");
 
     }
+
+    /**
+     * @route("/search", name="article_search")
+     */
+    public function getArticleByName(Request $request)
+    {
+
+       $form = $this->createForm(GetArticleByNameType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $repo = $this->getDoctrine()->getRepository(Article::class);
+            $article = $repo->findOneBy([ 'name' => $request->request->all('get_article_by_name') ]);
+            if(!$article){
+                $error = "Cet article n'existe pas !";
+                return $this->render('article/searchByName.html.twig', [
+                    'error' => $error
+                ]);
+            }
+            return $this->render('article/searchByName.html.twig', [
+                'article' => $article
+            ]);
+        }
+        return $this->render('article/searchByName.html.twig', [
+            'formArticle' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @route("/searchid", name="article_searchId")
+     */
+    public function getArticleById(Request $request){
+
+        $form = $this->createForm(GetArticleByIdType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $repo = $this->getDoctrine()->getRepository(Article::class);
+            $article = $repo->findOneBy([ 'id' => $request->request->all('get_article_by_id') ]);
+            if(!$article){
+                $error = "Cet article n'existe pas !";
+                return $this->render('article/searchById.html.twig', [
+                    'error' => $error
+                ]);
+            }
+            return $this->render('article/searchById.html.twig', [
+                'article' => $article
+            ]);
+        }
+        return $this->render('article/searchById.html.twig', [
+            'formArticle' => $form->createView()
+        ]);
+    }
+
+//    /**
+//     * @route("/search", name="article_search")
+//     */
+//    public function searchArticleByName(Request $request){
+//      $em = $this->getDoctrine()->getManager();
+//      $repo = $this->getDoctrine()->getRepository(Article::class);
+//     $article = $em->getRepository(Article::class)->findAll();
+//      if($request->isMethod("POST")){
+//          $name = $request->get("name");
+//          $article = $repo->findOneBy([ 'name' => $request->request->all('get_article_by_name') ]);
+//      }
+//
+//      return $this->render("article/searchByName.html.twig.");
+//    }
 
     /**
      * @Route("/article", name="article")
