@@ -3,7 +3,7 @@
 {% block body %}
     {%  if formArticle is defined %}
         {{ form_start(formArticle, {'method': 'POST'}) }}
-      
+
         <br>
         {{ form_row(formArticle.id, { 'attr': { 'placeholder':"Identifiant à entrer"} }) }}
         <br><br>

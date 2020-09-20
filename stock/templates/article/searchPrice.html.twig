@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {%  if formArticle is defined %}
+        {{ form_start(formArticle) }}
+
+        <br>
+        {{ form_row(formArticle.minPrice, { 'attr': { 'placeholder':"Prix minimum"} }) }}
+        {{ form_row(formArticle.maxPrice, { 'attr': { 'placeholder':"Prix maximum"} }) }}
+        <br><br>
+        <button type="submit" class="btn btn-success">Chercher l'article</button>
+        {{ form_end(formArticle) }}
+    {% endif %}
+    {% for article in articles %}
+        {%  if article is defined %}
+            <article>
+                <h2>Article trouvé !</h2>
+                <br><br>
+                <p>Identifiant de l'article : {{ article.id }}</p>
+                <p>Nom de l'article : {{ article.name }}</p>
+                <p>Prix de l'article : {{ article.price }} euros</p>
+            </article>
+        {% endif %}
+        {%  if error is defined %}
+            <div>
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{%endblock%}

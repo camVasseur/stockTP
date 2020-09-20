@@ -5,6 +5,7 @@ namespace App\Controller;
 //use Doctrine\DBAL\Types\TextType;
 use App\Form\ArticleType;
 use App\Form\GetArticleByIdType;
+use App\Form\SearchPriceType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 //use http\Env\Request;
@@ -109,6 +110,39 @@ class ArticleController extends AbstractController
         return $this->render('article/searchById.html.twig', [
             'formArticle' => $form->createView()
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @route("/searchprice", name="search_price")
+     */
+
+    public function articlesByPrice(Request $request){
+        $form = $this->createForm(SearchPriceType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $parameters= $request->request->get('search_price');
+            $minPrice = $parameters['minPrice'];
+            $maxPrice = $parameters['maxPrice'];
+            $repo = $this->getDoctrine()->getRepository(Article::class);
+            $articles = $repo->findAllBetweenMinPriceAndMaxPrice($minPrice,$maxPrice);
+            
+            if(!$articles){
+                $error = "Cet article n'existe pas !";
+                return $this->render('article/searchPrice.html.twig', [
+                    'error' => $error
+                ]);
+            }
+            return $this->render('article/searchPrice.html.twig', [
+                'controller_name' => 'ArticleController',
+                'articles' => $articles
+            ]);
+        }
+        return $this->render('article/searchPrice.html.twig', [
+            'formArticle' => $form->createView()
+        ]);
+
     }
 
     /**
