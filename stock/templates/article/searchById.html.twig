@@ -2,10 +2,10 @@
 
 {% block body %}
     {%  if formArticle is defined %}
-        {{ form_start(formArticle) }}
-        {{ form_label(formArticle.id, "Identifiant") }}
+        {{ form_start(formArticle, {'method': 'POST'}) }}
+      
         <br>
-        {{ form_widget(formArticle.id, { 'attr': { 'placeholder':"Numéro à entrer"} }) }}
+        {{ form_row(formArticle.id, { 'attr': { 'placeholder':"Identifiant à entrer"} }) }}
         <br><br>
         <button type="submit" class="btn btn-success">Chercher l'article</button>
         {{ form_end(formArticle) }}

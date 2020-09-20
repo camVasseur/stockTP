@@ -111,21 +111,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @route("/search", name="article_search")
-//     */
-//    public function searchArticleByName(Request $request){
-//      $em = $this->getDoctrine()->getManager();
-//      $repo = $this->getDoctrine()->getRepository(Article::class);
-//     $article = $em->getRepository(Article::class)->findAll();
-//      if($request->isMethod("POST")){
-//          $name = $request->get("name");
-//          $article = $repo->findOneBy([ 'name' => $request->request->all('get_article_by_name') ]);
-//      }
-//
-//      return $this->render("article/searchByName.html.twig.");
-//    }
-
     /**
      * @Route("/article", name="article")
      */

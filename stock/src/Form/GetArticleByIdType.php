@@ -3,10 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Article;
+//use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\TextType;
+use Doctrine\ORM\Mapping\Id;
+use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
