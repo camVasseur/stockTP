@@ -9,11 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
-class Article
+class SearchedArticle
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -26,7 +25,7 @@ class Article
 
     /**
      * @ORM\Column(type="float")
-     *@Assert\Positive
+     * @Assert\Positive
      */
     private $price;
 
@@ -46,6 +45,12 @@ class Article
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getName(): ?string
     {
@@ -96,3 +101,4 @@ class Article
     }
 
 }
+?>

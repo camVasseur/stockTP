@@ -11,8 +11,8 @@
         <button type="submit" class="btn btn-success">Chercher l'article</button>
         {{ form_end(formArticle) }}
     {% endif %}
-    {% for article in articles %}
-        {%  if article is defined %}
+        {%  if articles is defined %}
+            {% for article in articles %}
             <article>
                 <h2>Article trouvé !</h2>
                 <br><br>
@@ -20,11 +20,11 @@
                 <p>Nom de l'article : {{ article.name }}</p>
                 <p>Prix de l'article : {{ article.price }} euros</p>
             </article>
+        {% endfor %}
         {% endif %}
-        {%  if error is defined %}
+    {%  if error is defined %}
             <div>
                 <p>{{ error }}</p>
             </div>
         {% endif %}
-    {% endfor %}
 {%endblock%}

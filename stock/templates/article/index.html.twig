@@ -5,6 +5,7 @@
 {% block body %}
     <a href="{{ path('article_search')}}" class="btn btn-primary">Recherche par nom</a>
     <a href="{{ path('article_searchId')}}" class="btn btn-primary">Recherche par identifiant</a>
+    <a href="{{ path('search_price')}}" class="btn btn-primary">Recherche par prix</a>
 
     <section class="articles">
          {% for article in articles %}

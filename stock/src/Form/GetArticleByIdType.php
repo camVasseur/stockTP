@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 //use Doctrine\DBAL\Types\IntegerType;
+use App\Entity\SearchedArticle;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\Mapping\Id;
 use phpDocumentor\Reflection\Types\AbstractList;
@@ -30,7 +31,7 @@ class GetArticleByIdType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Article::class,
+            'data_class' => SearchedArticle::class,
         ]);
     }
 }
