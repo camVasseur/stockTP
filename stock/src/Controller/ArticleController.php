@@ -122,7 +122,7 @@ class ArticleController extends AbstractController
             $encoders = [new XmlEncoder(),new JsonEncoder()];
             $normalizers = [new ObjectNormalizer()];
             $serializer = new Serializer($normalizers, $encoders);
-            $dataJson = $serializer->serialize($article,'json',['circular_reference_limit' =>2,
+            $dataJson = $serializer->serialize($article,'json',['circular_reference_limit' =>1,
                                                                         'circular_reference_handler' =>
                                                                         function($object){
                                                                         return $object->getId();

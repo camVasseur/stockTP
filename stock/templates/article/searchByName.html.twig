@@ -7,7 +7,7 @@
         <br>
         {{ form_widget(formArticle.name, { 'attr': { 'placeholder':"Nom à entrer"} }) }}
         <br><br>
-        <button type="submit" class="btn btn-success">Chercher l'article</button>
+        <button onclick="" class="btn btn-success">Chercher l'article</button>
         {{ form_end(formArticle) }}
     {% endif %}
     {%  if article is defined %}
@@ -24,4 +24,30 @@
             <p>{{ error }}</p>
         </div>
     {% endif %}
+    <script>
+        function getName(){
+            $.ajax({
+                url: '/search',
+                type: 'GET',
+                dataType: 'json', //text
+                error: function (response) {
+                    console.log('error');
+                    console.log(response);
+                },
+                success: function (response, httpStatusCode) {
+                    console.log(response.login);
+                  response.
+                }
+
+                    else{
+                        isLogged = true;
+                        userLogin = response.login;
+                        userRole = response.role;
+                        userName = response.name;
+                        userSurname = response.surname;
+                        SetGlobalVariables();
+                    }
+                }})
+        }
+    </script>
 {%endblock%}
