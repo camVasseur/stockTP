@@ -103,37 +103,44 @@ class ArticleController extends AbstractController
      *  @route("/search", name="article_search")
      *
      */
-    public function getArticleByNameJson(Request $request){
+    public function getArticleByNameJson(/*Request $request*/){
 
        $form = $this->createForm(GetArticleByNameType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $repo = $this->getDoctrine()->getRepository(Article::class);
-            $article = $repo->findOneBy([ 'name' => $request->request->all('get_article_by_name') ]);
-
-            if(!$article){
-                $error = "Cet article n'existe pas !";
-                return $this->json( [
-                    'error' => $error
-                ]);
-            }
-
-            $encoders = [new XmlEncoder(),new JsonEncoder()];
-            $normalizers = [new ObjectNormalizer()];
-            $serializer = new Serializer($normalizers, $encoders);
-            $dataJson = $serializer->serialize($article,'json',['circular_reference_limit' =>1,
-                                                                        'circular_reference_handler' =>
-                                                                        function($object){
-                                                                        return $object->getId();
-                                                                        }
-                ]);
-            return $this->json( $dataJson);
-        }
         return $this->render('article/searchByName.html.twig', [
             'formArticle' => $form->createView()
             ]);
     }
+
+    /**
+     * @route("/test", name="search_test")
+     *
+     */
+    public function searchArticleByName(Request $request){
+        $name = $request->query->get("name");
+        $repo = $this->getDoctrine()->getRepository(Article::class);
+        $article = $repo->findOneBy([ 'name' => $name ]);
+
+        if(!$article){
+            $error = "Cet article n'existe pas !";
+            return $this->json( [
+                'error' => $error
+            ]);
+        }
+
+//        $encoders = [new XmlEncoder(),new JsonEncoder()];
+//        $normalizers = [new ObjectNormalizer()];
+//        $serializer = new Serializer($normalizers, $encoders);
+//        $dataJson = $serializer->serialize($article,'json',['circular_reference_limit' =>1,
+//            'circular_reference_handler' =>
+//                function($object){
+//                    return $object->getId();
+//                }
+//        ]);
+        //return $this->json( $dataJson);
+        return $this->render('article/article.html.twig', [
+            'article' => $article
+        ]);
+   }
 
 
     /**

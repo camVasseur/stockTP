@@ -1,53 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     {%  if formArticle is defined %}
         {{ form_start(formArticle) }}
         {{ form_label(formArticle.name, "Nom de l'article") }}
         <br>
         {{ form_widget(formArticle.name, { 'attr': { 'placeholder':"Nom à entrer"} }) }}
         <br><br>
-        <button onclick="" class="btn btn-success">Chercher l'article</button>
+        <button id="searchArticle_btn" class="btn btn-success">Chercher l'article</button>
         {{ form_end(formArticle) }}
     {% endif %}
-    {%  if article is defined %}
-        <div>
-            <h2>Article trouvé !</h2>
-            <br><br>
-            <p>Identifiant de l'article : {{ article.id }}</p>
-            <p>Nom de l'article : {{ article.name }}</p>
-            <p>Prix de l'article : {{ article.price }} euros</p>
-        </div>
-    {% endif %}
-    {%  if error is defined %}
-        <div>
-            <p>{{ error }}</p>
-        </div>
-    {% endif %}
-    <script>
-        function getName(){
-            $.ajax({
-                url: '/search',
-                type: 'GET',
-                dataType: 'json', //text
-                error: function (response) {
-                    console.log('error');
-                    console.log(response);
-                },
-                success: function (response, httpStatusCode) {
-                    console.log(response.login);
-                  response.
-                }
+{#    {%  if article is defined %}#}
+{#        <div>#}
+{#            <h2>Article trouvé !</h2>#}
+{#            <br><br>#}
+{#            <p >Identifiant de l'article : {{ article.id }}</p>#}
+{#            <p >Nom de l'article : {{ article.name }}</p>#}
+{#            <p >Prix de l'article : {{ article.price }} euros</p>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    {%  if error is defined %}#}
+{#        <div>#}
+{#            <p>{{ error }}</p>#}
+{#        </div>#}
+{#    {% endif %}#}
+    <section id="foundArticle">
 
-                    else{
-                        isLogged = true;
-                        userLogin = response.login;
-                        userRole = response.role;
-                        userName = response.name;
-                        userSurname = response.surname;
-                        SetGlobalVariables();
-                    }
-                }})
-        }
-    </script>
+    </section>
+
 {%endblock%}
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function getArticle(event){
+            event.preventDefault();
+            const url = "{{ path('search_test') }}";
+            let articleName = document.getElementById("get_article_by_name_name").value;
+
+            axios.get(url, {
+                params: {
+                    name: articleName
+                }
+            }).then(function(response){
+                console.log(response);
+                document.getElementById("foundArticle").innerHTML=response.data;
+            })
+        }
+        document.getElementById("searchArticle_btn").addEventListener("click", getArticle, false);
+    </script>
+{% endblock %}
